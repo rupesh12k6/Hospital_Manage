@@ -12,5 +12,6 @@ public interface DoctorService {
   List<DoctorDto> getAllDoctors();
   List<DoctorDto> getDoctorsBySpecialization(String name);
   DoctorDto setDoctorAvailabilityById(Long doctorId,String availability);
+  DoctorDto getDoctorById(Long doctorId);
 
 }

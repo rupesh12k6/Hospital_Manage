@@ -24,7 +24,8 @@ public class DoctorMapper {
                 doctorDto.getLicenceNumber(),
                 doctorDto.getEmail(),
                 doctorDto.getPhone(),
-                doctorDto.getAvailability()
+                doctorDto.getAvailability(),
+                null
         );
     }
 }

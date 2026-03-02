@@ -1,6 +1,7 @@
 package org.example.hospital_manage.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.example.hospital_manage.dto.AppointmentDto;
 import org.example.hospital_manage.mapper.PatientMapper;
 import org.example.hospital_manage.dto.PatientDto;
 import org.example.hospital_manage.entity.Patient;
@@ -73,6 +74,11 @@ public class PatientServiceImpl implements PatientService {
      Patient patient=patientRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Id not found"));
         patientRepository.deleteById(id);
         return PatientMapper.mapToPatientDto(patient);
+    }
+
+    @Override
+    public List<AppointmentDto> getAppointmentsByPatientId(Long id) {
+
     }
 
 

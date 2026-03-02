@@ -16,7 +16,7 @@ public class AppointmentDto {
     Long id;
     LocalDateTime appointmentDate;
     String status;
-    DoctorDto doctorDto;
-    PatientDto patientDto;
+    Long doctorId;
+    Long patientId;
 
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.hospital_manage.dto.AppointmentDto;
 import org.example.hospital_manage.entity.Appointment;
 import org.example.hospital_manage.entity.Doctor;
+import org.example.hospital_manage.entity.Patient;
 import org.example.hospital_manage.exception.ResourceNotFoundException;
 import org.example.hospital_manage.mapper.AppointmentMapper;
 import org.example.hospital_manage.mapper.DoctorMapper;
@@ -11,6 +12,8 @@ import org.example.hospital_manage.mapper.PatientMapper;
 import org.example.hospital_manage.repository.AppointmentRepository;
 import org.example.hospital_manage.repository.DoctorRepository;
 import org.example.hospital_manage.service.AppointmentService;
+import org.example.hospital_manage.service.DoctorService;
+import org.example.hospital_manage.service.PatientService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,10 +26,13 @@ import java.util.stream.Collectors;
 public class AppointmentServiceImpl implements AppointmentService {
     AppointmentRepository appointmentRepository;
     DoctorRepository doctorRepository;
+    PatientService patientService;
+    DoctorService doctorService;
     @Override
     public AppointmentDto createAppointment(AppointmentDto appointmentDto) {
-        return AppointmentMapper.maptoAppointmentDto(appointmentRepository.save(AppointmentMapper.maptoAppointment(appointmentDto)));
-    }
+        appointmentRepository.save(AppointmentMapper.maptoAppointment(appointmentDto));
+        return appointmentDto;
+      }
 
 
 
@@ -36,8 +42,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         updatedAppointment.setAppointmentDate(appointmentDto.getAppointmentDate());
         updatedAppointment.setAppointmentDate(appointmentDto.getAppointmentDate());
         updatedAppointment.setStatus(appointmentDto.getStatus());
-        updatedAppointment.setPatient(PatientMapper.mapToPatient(appointmentDto.getPatientDto()));
-        updatedAppointment.setDoctor(DoctorMapper.mapDoctorDtoToDoctor(appointmentDto.getDoctorDto()));
+        updatedAppointment.setPatient(PatientMapper.mapToPatient(patientService.getPatientById(appointmentDto.getId())));
+        updatedAppointment.setDoctor(DoctorMapper.mapDoctorDtoToDoctor(doctorService.getDoctorById(appointmentDto.getId())));
         return AppointmentMapper.maptoAppointmentDto(appointmentRepository.save(updatedAppointment));
 
     }
@@ -68,5 +74,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         List<Appointment> appointments=appointmentRepository.getAllByAppointmentDateBetween(startOfDay,endOfDay);
         return appointments.stream().map((AppointmentMapper::maptoAppointmentDto)).collect(Collectors.toList());
 
+    }
+
+    @Override
+    public List<AppointmentDto> getAllAppointmentsByPatientId(Long id) {
+        Patient patient=PatientMapper.mapToPatient(patientService.getPatientById(id));
+        List<Appointment> appointments=appointmentRepository.getAllByPatient(patient);
+        return appointments.stream().map((AppointmentMapper::maptoAppointmentDto)).collect(Collectors.toList());
     }
 }

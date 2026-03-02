@@ -27,7 +27,8 @@ public class PatientMapper {
                 patientDto.getAadhaar(),
                 patientDto.getEmail(),
                 patientDto.getGender(),
-                patientDto.getAge()
+                patientDto.getAge(),
+                null
         );
     }
 }

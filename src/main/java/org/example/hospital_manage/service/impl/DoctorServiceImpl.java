@@ -74,4 +74,10 @@ public class DoctorServiceImpl implements DoctorService {
         doctorRepository.save(updateddoctor);
         return DoctorMapper.mapDoctorToDoctorDto(updateddoctor);
     }
+
+    @Override
+    public DoctorDto getDoctorById(Long doctorId) {
+        Doctor doctor=doctorRepository.findDoctorById(doctorId);
+        return DoctorMapper.mapDoctorToDoctorDto(doctor);
+    }
 }
